@@ -332,7 +332,17 @@
             resultsContainer.style.display = 'none';
             return;
         }
-        const filteredResults = data.filter(item => item.query.toLowerCase().includes(input));
+
+        // Create a Set to track unique game names
+        const uniqueResults = new Set();
+        const filteredResults = data.filter(item => {
+            if (item.query.toLowerCase().includes(input) && !uniqueResults.has(item.name)) {
+                uniqueResults.add(item.name);
+                return true;
+            }
+            return false;
+        });
+
         if (filteredResults.length > 0) {
             resultsContainer.style.display = 'block';
             filteredResults.forEach(item => {
